@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Parser.BackgroundService": {
+      "commandName": "Project"
+    },
+    "Docker": {
+      "commandName": "Docker"
+    }
+  }
+}
