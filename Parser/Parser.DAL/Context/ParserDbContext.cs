@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 
 namespace Parser.DAL.Context
 {
@@ -10,7 +11,6 @@ namespace Parser.DAL.Context
 
         public ParserDbContext(DbContextOptions<ParserDbContext> options) : base(options)
         {
-
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -28,7 +28,7 @@ namespace Parser.DAL.Context
                 .HasOne(p => p.Currency)
                 .WithMany(b => b.Values)
                 .HasForeignKey(p => p.CurrencyId);
-            
+
             modelBuilder.Entity<CurrencyValue>()
                 .Property(p => p.UnitValue)
                 .HasComputedColumnSql("[Value] / [Amount]");
@@ -36,13 +36,15 @@ namespace Parser.DAL.Context
             modelBuilder.Entity<CurrencyValue>()
                 .HasIndex(b => new {b.CurrencyId, b.Date})
                 .IsUnique();
-            
+
             modelBuilder.Entity<Currency>()
                 .HasIndex(b => new {b.Name})
                 .IsUnique();
-            
+
             modelBuilder.Entity<CurrencyValue>(entity =>
                 entity.HasCheckConstraint("CK_CurrencyValue_Value", "[Value] >= 0"));
+
+            modelBuilder.ConfigureDbFunctions();
 
             base.OnModelCreating(modelBuilder);
         }
