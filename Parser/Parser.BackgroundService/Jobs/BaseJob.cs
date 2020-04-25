@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Quartz;
 
 namespace Parser.BackgroundService.Jobs
@@ -8,10 +9,11 @@ namespace Parser.BackgroundService.Jobs
     internal abstract class BaseJob : IJob
     {
         protected readonly IServiceScopeFactory ServiceScopeFactory;
-
-        protected BaseJob(IServiceScopeFactory serviceScopeFactory)
+        private readonly ILogger<BaseJob> _logger;
+        protected BaseJob(IServiceScopeFactory serviceScopeFactory, ILogger<BaseJob> logger)
         {
             ServiceScopeFactory = serviceScopeFactory;
+            _logger = logger;
         }
 
         protected abstract Task ExecuteInternal(IJobExecutionContext context);
@@ -24,7 +26,7 @@ namespace Parser.BackgroundService.Jobs
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                _logger.LogError(e, $"Job execution error. Job name: {this.GetType().Name}");
                 throw;
             }
         }

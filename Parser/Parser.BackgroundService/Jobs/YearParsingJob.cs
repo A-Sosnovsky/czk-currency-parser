@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Parser.Services;
 using Quartz;
 
@@ -7,7 +8,8 @@ namespace Parser.BackgroundService.Jobs
 {
     internal class YearParsingJob : BaseJob
     {
-        public YearParsingJob(IServiceScopeFactory serviceScopeFactory) : base(serviceScopeFactory)
+        public YearParsingJob(IServiceScopeFactory serviceScopeFactory, ILogger<BaseJob> logger) : base(
+            serviceScopeFactory, logger)
         {
         }
 

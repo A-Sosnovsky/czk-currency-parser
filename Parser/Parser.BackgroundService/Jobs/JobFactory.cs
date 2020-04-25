@@ -1,4 +1,6 @@
 ﻿using System;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Quartz;
 using Quartz.Spi;
 
@@ -21,16 +23,15 @@ namespace Parser.BackgroundService.Jobs
                 {
                     return job;
                 }
-                else
-                {
-                    var exception = new Exception($"Can't cast {bundle.JobDetail.JobType} to {typeof(IJob)}");
-//                    Logger.Error(exception);
-                    throw exception;
-                }
+
+                var exception = new Exception($"Can't cast {bundle.JobDetail.JobType} to {typeof(IJob)}");
+                _container.GetRequiredService<ILogger<JobFactory>>().LogCritical(exception, "Unable to schedule job");
+                throw exception;
             }
             catch (Exception exception)
             {
-  //              Logger.Error(exception, $"Can't get {bundle.JobDetail.JobType} through DI");
+                _container.GetRequiredService<ILogger<JobFactory>>()
+                    .LogError(exception, $"Can't get {bundle.JobDetail.JobType} through DI");
                 throw;
             }
         }
@@ -39,5 +40,5 @@ namespace Parser.BackgroundService.Jobs
         {
             (job as IDisposable)?.Dispose();
         }
-	}
+    }
 }

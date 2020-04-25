@@ -10,7 +10,7 @@ using Quartz.Impl;
 
 namespace Parser.BackgroundService.Schedulers
 {
-    internal static class ParsingScheduler
+    internal static class Scheduler
     {
         private const int DefaultStartIntervalSeconds = 60;
         private const string JobNameTemplate = "Job.{0}";
@@ -18,7 +18,6 @@ namespace Parser.BackgroundService.Schedulers
         public static async void Start(IServiceProvider serviceProvider)
         {
             var configurationProvider = serviceProvider.GetRequiredService<IConfigurationProvider>();
-
             var scheduler = await StdSchedulerFactory.GetDefaultScheduler();
             scheduler.JobFactory = serviceProvider.GetRequiredService<JobFactory>();
             foreach (var job in GetJobsToRun(configurationProvider))

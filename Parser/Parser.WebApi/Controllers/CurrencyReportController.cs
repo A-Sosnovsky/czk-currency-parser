@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Parser.Services.Report;
 using Parser.WebApi.Reports;
 
@@ -11,12 +10,10 @@ namespace Parser.WebApi.Controllers
     [Route("[controller]")]
     public class CurrencyReportController : ControllerBase
     {
-        private readonly ILogger<CurrencyReportController> _logger;
         private readonly ICurrencyReportService _reportService;
 
-        public CurrencyReportController(ILogger<CurrencyReportController> logger, ICurrencyReportService reportService)
+        public CurrencyReportController(ICurrencyReportService reportService)
         {
-            _logger = logger;
             _reportService = reportService;
         }
 
@@ -29,7 +26,8 @@ namespace Parser.WebApi.Controllers
             return new MonthReport
             {
                 Date = report.Date,
-                WeekPeriods = report.Weeks.GroupBy(w => new {w.WeekNumber, w.StartDay, w.EndDay})
+                WeekPeriods = report.Weeks
+                    .GroupBy(w => new {w.WeekNumber, w.StartDay, w.EndDay})
                     .OrderBy(w => w.Key.WeekNumber)
                     .Select(grouping => new MonthReportWeekPeriod
                     {
