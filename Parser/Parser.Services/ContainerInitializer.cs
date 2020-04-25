@@ -1,13 +1,15 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using Microsoft.Extensions.DependencyInjection;
 
+[assembly: InternalsVisibleTo("Parser.Services.Tests")]
 namespace Parser.Services
 {
     public static class ContainerInitializer
     {
         public static IServiceCollection Initialize(this IServiceCollection services)
         {
-            services.AddScoped<ICurrencyService, CurrencyService>();
+            services.AddScoped<ICurrencySaveService, CurrencySaveService>();
             services.AddScoped<ICurrencyProvider, CurrencyProvider>();
             services.AddHttpClient("CurrencyClient", client =>
             {

@@ -27,7 +27,6 @@ namespace Parser.DAL
                 Console.WriteLine(e);
                 throw;
             }
-
         }
     }
 }

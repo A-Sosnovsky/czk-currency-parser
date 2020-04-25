@@ -14,6 +14,7 @@ namespace Parser.DAL.Context
         [Column(TypeName="Date")]
         public DateTime Date { get; set; }
         [Required]
+        [Column(TypeName="Money")]
         public decimal Value { get; set; }
         
         public Currency Currency { get; set; }

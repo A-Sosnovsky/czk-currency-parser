@@ -7,8 +7,9 @@ namespace Parser.BackgroundService
     {
         public static IServiceCollection Initialize(this IServiceCollection services)
         {
-            services.AddTransient<JobFactory>();
+            services.AddSingleton<JobFactory>();
             services.AddScoped<DailyParsingJob>();
+            services.AddScoped<YearParsingJob>();
             return services;
         }
     }

@@ -1,4 +1,3 @@
-using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Parser.Services;
@@ -15,10 +14,10 @@ namespace Parser.BackgroundService.Jobs
         protected override async Task ExecuteInternal(IJobExecutionContext context)
         {
             using var scope = ServiceScopeFactory.CreateScope();
-            var parser = scope.ServiceProvider.GetService<ICurrencyService>();
-            
-            await parser.ParseByYear(2017);
-            await parser.ParseByYear(2018);
+            var parser = scope.ServiceProvider.GetService<ICurrencySaveService>();
+
+            await parser.SaveByYear(2017);
+            await parser.SaveByYear(2018);
         }
     }
 }

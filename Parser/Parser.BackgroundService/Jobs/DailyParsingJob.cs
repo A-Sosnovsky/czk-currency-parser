@@ -15,8 +15,8 @@ namespace Parser.BackgroundService.Jobs
         protected override async Task ExecuteInternal(IJobExecutionContext context)
         {
             using var scope = ServiceScopeFactory.CreateScope();
-            var parser = scope.ServiceProvider.GetService<ICurrencyService>();
-            await parser.ParseByDate(DateTime.Now);
+            var parser = scope.ServiceProvider.GetService<ICurrencySaveService>();
+            await parser.SaveByDate(DateTime.Now);
         }
     }
 }
