@@ -11,18 +11,17 @@ namespace Parser.DAL
     {
         public static IServiceCollection Initialize(this IServiceCollection services)
         {
-            services.AddDbContext<ParserDbContext>(options =>
-                options.UseSqlServer(
-                    @"Server=(localdb)\mssqllocaldb;Database=Parser;Trusted_Connection=True;MultipleActiveResultSets=true;"));
+            services.AddDbContext<ParserDbContext>();
             services.AddScoped<IRepository, Repository>();
             return services;
         }
 
-        public static async Task CreateDbIfRequired(IServiceProvider serviceProvider)
+        public static async Task InitDb(IServiceProvider serviceProvider, string connectionString)
         {
             var logger = serviceProvider.GetRequiredService<ILogger<ParserDbContext>>();
             try
             {
+                ParserDbContext.SetConnectionString(connectionString);
                 var context = serviceProvider.GetRequiredService<ParserDbContext>();
                 await context.Database.MigrateAsync();
             }

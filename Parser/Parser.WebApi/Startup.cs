@@ -47,7 +47,8 @@ namespace Parser.WebApi
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            DAL.ContainerInitializer.CreateDbIfRequired(app.ApplicationServices).Wait();
+            var connectionString = Configuration.GetConnectionString("default");
+            DAL.ContainerInitializer.InitDb(app.ApplicationServices, connectionString).Wait();
 
             if (env.IsDevelopment())
             {

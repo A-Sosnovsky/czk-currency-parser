@@ -22,12 +22,21 @@ namespace Parser.DAL
             _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
         }
 
-
         public IQueryable<T> Query<T>() where T : class
         {
             return _dbContext.Set<T>();
         }
 
+        public async Task MergeAsync<T>(T entity, Expression<Func<T, object>> match) where T : class
+        {
+            if (entity == null)
+            {
+                throw new ArgumentNullException(nameof(entity));
+            }
+
+            await _dbContext.Set<T>().Upsert(entity).On(match).RunAsync();
+        }        
+        
         public async Task BulkMergeAsync<T>(IEnumerable<T> entities, Expression<Func<T, object>> match) where T : class
         {
             if (entities == null)
@@ -80,6 +89,11 @@ namespace Parser.DAL
 
             _transaction.Dispose();
             _transaction = null;
+        }
+
+        public void BeginTransaction()
+        {
+            StartNewTransactionIfNeeded();
         }
 
         public void RollbackTransaction()

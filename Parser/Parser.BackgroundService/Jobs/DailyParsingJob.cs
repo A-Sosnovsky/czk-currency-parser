@@ -9,8 +9,8 @@ namespace Parser.BackgroundService.Jobs
 {
     internal class DailyParsingJob : BaseJob
     {
-        public DailyParsingJob(IServiceScopeFactory serviceScopeFactory, ILogger<BaseJob> logger) : base(
-            serviceScopeFactory, logger)
+        public DailyParsingJob(IServiceScopeFactory serviceScopeFactory, ILogger<BaseJob> logger)
+            : base(serviceScopeFactory, logger)
         {
         }
 
@@ -18,7 +18,7 @@ namespace Parser.BackgroundService.Jobs
         {
             using var scope = ServiceScopeFactory.CreateScope();
             var parser = scope.ServiceProvider.GetService<ICurrencySaveService>();
-            await parser.SaveByDate(DateTime.Now);
+            await parser.SaveByDate(DateTime.Now); //по-хорошему бы узнать что на тачке правильное время стоит, но делать я этого конечно же не буду
         }
     }
 }

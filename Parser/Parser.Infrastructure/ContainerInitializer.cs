@@ -8,7 +8,6 @@ namespace Parser.Infrastructure
     {
         public static IServiceCollection Initialize(this IServiceCollection services)
         {
-            services.AddScoped<IConfigurationProvider, EnvironmentVariablesConfigurationProvider>();
             services.TryAdd(ServiceDescriptor.Singleton<ILoggerFactory, LoggerFactory>());
             services.TryAdd(ServiceDescriptor.Singleton(typeof(ILogger<>), typeof(Logger<>)));
             return services;

@@ -22,7 +22,9 @@
       "launchBrowser": true,
       "launchUrl": "weatherforecast",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ConnectionStrings__default": "Server=(localdb)\\mssqllocaldb;Database=Parser;Trusted_Connection=True;MultipleActiveResultSets=true;",
+        "MonthReport__Currencies": "EUR;USD;RUB"
       },
       "applicationUrl": "http://localhost:5000"
     },
@@ -30,6 +32,10 @@
       "commandName": "Docker",
       "launchBrowser": true,
       "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/weatherforecast",
+      "environmentVariables": {
+        "ConnectionStrings__default": "Server=(localdb)\\mssqllocaldb;Database=Parser;Trusted_Connection=True;MultipleActiveResultSets=true;",
+        "MonthReport__Currencies": "EUR;USD;RUB"
+      },
       "publishAllPorts": true
     }
   }

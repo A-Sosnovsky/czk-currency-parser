@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Parser.BackgroundService.Jobs;
-using Parser.Infrastructure;
 using Quartz;
 using Quartz.Impl;
 
@@ -14,10 +14,11 @@ namespace Parser.BackgroundService.Schedulers
     {
         private const int DefaultStartIntervalSeconds = 60;
         private const string JobNameTemplate = "Job.{0}";
+        private const string ConfigurationKeyPrefix = "Schedule";
 
         public static async void Start(IServiceProvider serviceProvider)
         {
-            var configurationProvider = serviceProvider.GetRequiredService<IConfigurationProvider>();
+            var configurationProvider = serviceProvider.GetRequiredService<IConfiguration>();
             var scheduler = await StdSchedulerFactory.GetDefaultScheduler();
             scheduler.JobFactory = serviceProvider.GetRequiredService<JobFactory>();
             foreach (var job in GetJobsToRun(configurationProvider))
@@ -40,19 +41,20 @@ namespace Parser.BackgroundService.Schedulers
             await scheduler.Start();
         }
 
-        private static IEnumerable<JobConfiguration> GetJobsToRun(IConfigurationProvider configurationProvider)
+        private static IEnumerable<JobConfiguration> GetJobsToRun(IConfiguration configuration)
         {
             var type = typeof(IJob);
             return AppDomain.CurrentDomain.GetAssemblies()
                 .SelectMany(s => s.GetTypes())
                 .Where(p => type.IsAssignableFrom(p) && !p.IsAbstract)
-                .Select(p => new JobConfiguration(p, GetJobScheduleExpression(p, configurationProvider)));
+                .Select(p => new JobConfiguration(p, GetJobScheduleExpression(p, configuration)));
         }
 
-        private static string GetJobScheduleExpression(MemberInfo type, IConfigurationProvider configurationProvider)
+        private static string GetJobScheduleExpression(MemberInfo type, IConfiguration configuration)
         {
             var key = string.Format(JobNameTemplate, type.Name);
-            var value = configurationProvider.GetConfigurationValue(key);
+            var value = configuration.GetSection(ConfigurationKeyPrefix)?[key];
+
             if (string.IsNullOrWhiteSpace(value) || !CronExpression.IsValidExpression(value))
             {
                 return null;

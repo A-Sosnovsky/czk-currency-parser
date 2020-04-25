@@ -12,9 +12,11 @@ namespace Parser.DAL
         IQueryable<T> Query<T>() where T : class;
         Task InsertAsync<T>(T entity) where T : class;
         Task BulkInsertAsync<T>(IEnumerable<T> entities) where T : class;
+        Task MergeAsync<T>(T entity, Expression<Func<T, object>> match) where T : class;
         Task BulkMergeAsync<T>(IEnumerable<T> entities, Expression<Func<T, object>> match) where T : class;
         Task<int> SaveChangesAsync();
         void CommitTransaction();
+        void BeginTransaction();
         void RollbackTransaction();
         void SetIsolationLevel(IsolationLevel isolationLevel);
     }

@@ -1,10 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
+﻿using System;
+using Microsoft.EntityFrameworkCore;
 
 namespace Parser.DAL.Context
 {
     internal class ParserDbContext : DbContext
     {
+        private static string ConnectionString { get; set; }
+
         public ParserDbContext()
         {
         }
@@ -13,10 +15,21 @@ namespace Parser.DAL.Context
         {
         }
 
+        public static void SetConnectionString(string connectionString)
+        {
+            if (string.IsNullOrWhiteSpace(connectionString))
+            {
+                throw new ArgumentNullException(nameof(connectionString));
+            }
+            ConnectionString = connectionString;
+        }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(
-                @"Server=(localdb)\mssqllocaldb;Database=Parser;Trusted_Connection=True;;MultipleActiveResultSets=true;");
+            if (!optionsBuilder.IsConfigured)
+            {
+                optionsBuilder.UseSqlServer(ConnectionString);
+            }
         }
 
         public DbSet<Currency> Currencies { get; set; }

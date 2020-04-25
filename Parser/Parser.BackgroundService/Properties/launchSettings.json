@@ -1,7 +1,11 @@
 {
   "profiles": {
     "Parser.BackgroundService": {
-      "commandName": "Project"
+      "commandName": "Project",
+      "environmentVariables": {
+        "ConnectionStrings__default": "Server=(localdb)\\mssqllocaldb;Database=Parser;Trusted_Connection=True;MultipleActiveResultSets=true;",
+        "Schedule__Job.DailyParsingJob": "0 0/1 * * * ?"
+      }
     },
     "Docker": {
       "commandName": "Docker"

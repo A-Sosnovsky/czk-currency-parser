@@ -23,14 +23,14 @@ namespace Parser.WebApi.Reports
             }
             else
             {
-                await base.WriteResponseBodyAsync(context);
+                await base.WriteResponseBodyAsync(context, selectedEncoding);
             }
         }
 
         private static void Format(StringBuilder builder, MonthReport report)
         {
             builder.AppendLine($"Year: {report.Date.Year}, month: {report.Date.ToString("MMMM", CultureInfo.InvariantCulture)}");
-            builder.AppendLine($"Week periods:");
+            builder.AppendLine("Week periods:");
             foreach (var period in report.WeekPeriods)
             {
                 builder.Append($"{period.WeekStartDay}..{period.WeekEndDay}: ");
@@ -43,7 +43,7 @@ namespace Parser.WebApi.Reports
         {
             foreach (var row in period.Rows)
             {
-                builder.Append($"{row.CurrencyName} - max: {row.Max}, min: {row.Min}, median: {row.Median};");
+                builder.Append($"{row.CurrencyName} - max: {row.Max}, min: {row.Min}, median: {row.Median}; ");
             }
         }
     }

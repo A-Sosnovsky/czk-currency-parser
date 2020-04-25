@@ -17,7 +17,6 @@ namespace Parser.BackgroundService.Jobs
         {
             using var scope = ServiceScopeFactory.CreateScope();
             var parser = scope.ServiceProvider.GetService<ICurrencySaveService>();
-
             await parser.SaveByYear(2017);
             await parser.SaveByYear(2018);
         }
