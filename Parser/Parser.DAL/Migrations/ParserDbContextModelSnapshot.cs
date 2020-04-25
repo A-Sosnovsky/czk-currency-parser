@@ -45,14 +45,22 @@ namespace Parser.DAL.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("Amount")
+                        .HasColumnType("int");
+
                     b.Property<int>("CurrencyId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("Date");
 
+                    b.Property<decimal>("UnitValue")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("Money")
+                        .HasComputedColumnSql("[Value] / [Amount]");
+
                     b.Property<decimal>("Value")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("Money");
 
                     b.HasKey("Id");
 

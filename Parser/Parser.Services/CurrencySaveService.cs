@@ -49,10 +49,11 @@ namespace Parser.Services
             var insert = values.Select(r => new DAL.Context.CurrencyValue
             {
                 Date = r.Date,
-                Value = r.Value / r.Amount,
+                Value = r.Value,
                 Currency = dbCurrencies.TryGetValue(r.Name, out var currency)
                     ? currency
-                    : new Currency { Name = r.Name }
+                    : new Currency { Name = r.Name },
+                Amount = r.Amount
             });
 
             foreach (var value in insert)

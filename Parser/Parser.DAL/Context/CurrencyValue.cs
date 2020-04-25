@@ -16,6 +16,11 @@ namespace Parser.DAL.Context
         [Required]
         [Column(TypeName="Money")]
         public decimal Value { get; set; }
+        [Required]
+        public int Amount { get; set; }
+
+        [Column(TypeName = "Money")]
+        public decimal UnitValue { get; set; }
         
         public Currency Currency { get; set; }
     }

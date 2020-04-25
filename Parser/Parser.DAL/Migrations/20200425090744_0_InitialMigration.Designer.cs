@@ -10,8 +10,8 @@ using Parser.DAL.Context;
 namespace Parser.DAL.Migrations
 {
     [DbContext(typeof(ParserDbContext))]
-    [Migration("20200424170313_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20200425090744_0_InitialMigration")]
+    partial class _0_InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -47,14 +47,22 @@ namespace Parser.DAL.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("Amount")
+                        .HasColumnType("int");
+
                     b.Property<int>("CurrencyId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("Date");
 
+                    b.Property<decimal>("UnitValue")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("Money")
+                        .HasComputedColumnSql("[Value] / [Amount]");
+
                     b.Property<decimal>("Value")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("Money");
 
                     b.HasKey("Id");
 

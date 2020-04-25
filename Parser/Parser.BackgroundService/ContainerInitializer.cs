@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Parser.BackgroundService.Jobs;
+using Parser.BackgroundService.Schedulers;
 
 namespace Parser.BackgroundService
 {

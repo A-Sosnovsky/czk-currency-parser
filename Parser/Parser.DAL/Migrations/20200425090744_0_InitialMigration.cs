@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Parser.DAL.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class _0_InitialMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -28,7 +28,9 @@ namespace Parser.DAL.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CurrencyId = table.Column<int>(nullable: false),
                     Date = table.Column<DateTime>(type: "Date", nullable: false),
-                    Value = table.Column<decimal>(nullable: false)
+                    Value = table.Column<decimal>(type: "Money", nullable: false),
+                    Amount = table.Column<int>(nullable: false),
+                    UnitValue = table.Column<decimal>(type: "Money", nullable: false, computedColumnSql: "[Value] / [Amount]")
                 },
                 constraints: table =>
                 {

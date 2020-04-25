@@ -23,6 +23,7 @@ namespace Parser.BackgroundService
             {
                 DAL.ContainerInitializer.Initialize(collection);
                 Services.ContainerInitializer.Initialize(collection);
+                Infrastructure.ContainerInitializer.Initialize(collection);
                 ContainerInitializer.Initialize(collection);
             });
     }

@@ -30,6 +30,10 @@ namespace Parser.DAL.Context
                 .HasForeignKey(p => p.CurrencyId);
             
             modelBuilder.Entity<CurrencyValue>()
+                .Property(p => p.UnitValue)
+                .HasComputedColumnSql("[Value] / [Amount]");
+
+            modelBuilder.Entity<CurrencyValue>()
                 .HasIndex(b => new {b.CurrencyId, b.Date})
                 .IsUnique();
             
