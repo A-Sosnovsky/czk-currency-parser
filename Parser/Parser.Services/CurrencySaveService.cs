@@ -49,13 +49,17 @@ namespace Parser.Services
             var insert = values.Select(r => new DAL.Context.CurrencyValue
             {
                 Date = r.Date,
-                Value = r.Value / r.Multiplier,
+                Value = r.Value / r.Amount,
                 Currency = dbCurrencies.TryGetValue(r.Name, out var currency)
                     ? currency
                     : new Currency { Name = r.Name }
             });
 
-            await _repository.BulkInsertAsync(insert);
+            foreach (var value in insert)
+            {
+                await _repository.InsertAsync(value);
+            }
+            
             _repository.CommitTransaction();
         }
     }

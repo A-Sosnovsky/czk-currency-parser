@@ -6,8 +6,7 @@ namespace Parser.Services
     {
         private string _name;
         private decimal _value;
-        private int _multiplier;
-        
+        private int _amount;
         public DateTime Date { get; set; }
         public decimal Value
         {
@@ -37,9 +36,9 @@ namespace Parser.Services
             }
         }
 
-        public int Multiplier
+        public int Amount
         {
-            get => _multiplier;
+            get => _amount;
             set
             {
                 if (value <= 0)
@@ -47,10 +46,9 @@ namespace Parser.Services
                     throw new InvalidOperationException(@"Value can't be less than zero");
                 }
 
-                _multiplier = value;
+                _amount = value;
             }
         }
-
 
         public override bool Equals(object obj)
         {
@@ -69,12 +67,12 @@ namespace Parser.Services
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(Name, Value, Multiplier, Date);
+            return HashCode.Combine(Name, Value, Amount, Date);
         }
 
         private bool Equals(CurrencyValue obj)
         {
-            return obj.Multiplier == _multiplier && obj.Value == _value && obj.Name == Name && obj.Date == Date;
+            return obj.Amount == _amount && obj.Value == _value && obj.Name == Name && obj.Date == Date;
         }
     }
 }
